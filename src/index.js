@@ -16,11 +16,17 @@ let searchQuery = '';
 
 async function loadGallery(event) {
   event.preventDefault();
+  searchQuery = refs.input.value.toLocaleLowerCase().trim();
+  page = 1;
+
+  if (searchQuery === '') {
+    Notify.failure('Please, enter some value and try again.');
+    refs.form.reset();
+    return;
+  }
   if (!refs.btnMore.classList.contains('is-hidden')) {
     refs.btnMore.classList.add('is-hidden');
   }
-  searchQuery = refs.input.value;
-  page = 1;
 
   try {
     const resp = await fetchImages(searchQuery, page);
@@ -29,24 +35,27 @@ async function loadGallery(event) {
       Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+      return;
     }
     refs.container.innerHTML = '';
     createMarkup(element);
     refs.form.reset();
     refs.btnMore.classList.remove('is-hidden');
-    checkPage(resp.data.totalHits, page )
+    checkPage(resp.data.totalHits, page);
   } catch (err) {
-    console.log(err);
+    Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
   }
 }
 
 async function loadMore() {
   page += 1;
   try {
-    const resp = await fetchImages(searchQuery, page);   
+    const resp = await fetchImages(searchQuery, page);
     const element = resp.data.hits;
     createMarkup(element);
-    checkPage(resp.data.totalHits, page )
+    checkPage(resp.data.totalHits, page);
   } catch (err) {
     console.log(err);
   }
@@ -77,10 +86,11 @@ function createMarkup(element) {
   refs.container.insertAdjacentHTML('beforeend', markup);
 }
 
-function checkPage(allPage, currentPage){
-    if (Math.ceil(allPage  /40 ) <= currentPage) {
-        Notify.failure(
-          "We're sorry, but you've reached the end of search results."
-        );
-        refs.btnMore.classList.add('is-hidden');
-      }}
+function checkPage(allPage, currentPage) {
+  if (Math.ceil(allPage / 40) <= currentPage) {
+    Notify.failure(
+      "We're sorry, but you've reached the end of search results."
+    );
+    refs.btnMore.classList.add('is-hidden');
+  }
+}

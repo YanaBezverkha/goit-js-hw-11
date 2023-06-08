@@ -57,7 +57,9 @@ async function loadMore() {
     createMarkup(element);
     checkPage(resp.data.totalHits, page);
   } catch (err) {
-    console.log(err);
+    Notify.failure(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
   }
 }
 

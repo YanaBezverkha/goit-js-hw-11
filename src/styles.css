@@ -1,0 +1,35 @@
+body {
+  margin: 50px 50px;
+  max-width: 1200px;
+}
+
+p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+img {
+  margin: auto;
+  display: block;
+  height: auto;
+  width: 200px;
+}
+
+form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.gallery {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.photo-card {
+  width: 200px;
+}
+
+.is-hidden {
+  display: none;
+}
